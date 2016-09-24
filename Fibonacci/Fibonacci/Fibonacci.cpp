@@ -7,6 +7,8 @@
 using namespace std;
 
 class Fib {
+private:
+	unsigned long lookup_array[70] = { 0,1 };
 public:
 	long fib_value(int n) {
 		if (n == 0) {
@@ -15,8 +17,13 @@ public:
 		else if (n == 1) {
 			return 1;
 		}
+		else if (lookup_array[n] != 0) {
+			return lookup_array[n];
+		}
 		else {
-			return (fib_value(n - 1) + fib_value(n - 2));
+			unsigned long intermidiate = fib_value(n - 1) + fib_value(n - 2);
+			lookup_array[n] = intermidiate;
+			return intermidiate;
 		}
 		
 	}
@@ -27,7 +34,7 @@ public:
 int main()
 {
 	Fib fib;
-	long Answer;
+	unsigned long Answer;
 	int n;
 	cout << "Enter value to compute it's Fibonacci value: " << endl ;
 	cin >> n;
