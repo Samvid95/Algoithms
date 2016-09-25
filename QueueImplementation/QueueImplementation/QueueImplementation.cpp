@@ -19,34 +19,47 @@ public:
 		tail = -1;
 	}
 	
+	bool IsFull() {
+		if (((tail + 1) % MAX_SIZE) == head) {
+			return true;
+		}
+		return false;
+	}
 	
 	void Enqueue(T element) {
+		if (IsFull()) {
+			cout << "Queue is Full buddy!!" << endl;
+			return;
+		}
 		if (head == -1 && tail == -1) {
 			tail = 0;
 			head = 0;
 		}
-		tail = (tail + 1)%MAX_SIZE;
+		else {
+			tail = (tail + 1) % MAX_SIZE;
+		}
 		my_Array[tail] = element;
 	}
 
 	void Print_All() {
-		for (int i = tail; i <= tail; i++) {
+		for (int i = 0; i <= (tail + MAX_SIZE - head)% MAX_SIZE; i++) {
 			cout << my_Array[i] << endl;
 		}
 	}
 	T Dequeue() {
-		T element = my_Array[head];
+		
+		if (head == -1 && tail == -1) {
+			cout << "Queue is Empty man!! " << endl;
+			return 0;
+		}
+		if (head == tail) {
+			head = tail = -1;
+		}
 		head = (head + 1) % MAX_SIZE;
+		T element = my_Array[head];
 		return element;
 	}
 	
-	T HeadPeek() {
-		return head;
-	}
-	
-	T TailPeek() {
-		return tail;
-	}
 };
 
 
@@ -61,9 +74,7 @@ int main()
 	while (true) {
 		cout << "1: Enqueue" << endl
 			<< "2: Dequeue" << endl
-			<< "3: HeadPeek" << endl
-			<< "4: TailPeek" << endl
-			<< "5: PrintAll" << endl;
+			<< "3: PrintAll" << endl;
 
 		cin >> choice;
 		switch (choice)
@@ -78,16 +89,6 @@ int main()
 			cout << "The value removed is: " << midValue << endl;
 			break;
 		case 3:
-			int headValue;
-			headValue = int_Queue.HeadPeek();
-			cout << "The Head is: " << headValue << endl;
-			break;
-		case 4:
-			int tailValue;
-			tailValue = int_Queue.TailPeek();
-			cout << "The Tail is: " <<tailValue << endl;
-			break;
-		case 5:
 			int_Queue.Print_All();
 		default:
 			break;
