@@ -1,5 +1,16 @@
 // QueueImplementation.cpp : Defines the entry point for the console application.
 //
+/**
+* Author: Samvid Jhaveri
+* ID: N19039005
+* Date: Fall 2016
+* Partner: I work alone #LONE-RANGER
+* Course: Design and Analysis of Algorithm
+*
+*
+*Summary of File:
+*	This is the implementation of the Queue.
+*/
 
 #include "stdafx.h"
 #include <iostream>
@@ -14,11 +25,29 @@ private:
 	T my_Array[MAX_SIZE];
 	int head, tail;
 public:
+	/**
+	* My_Queue()
+	*
+	* Paraeters: it's a constructor
+	* Retun Value: nothing
+	*
+	* Summary of the pogram:
+	*	Initalising the queue and head and tail are defined.
+	*/
 	My_Queue() {
 		head = -1;
 		tail = -1;
 	}
 	
+	/**
+	* bool IsFull()
+	*
+	* Paraeters: nothing
+	* Retun Value: bool
+	*
+	* Summary of the pogram:
+	*	This will return true if the queue is full or else false.
+	*/
 	bool IsFull() {
 		if (((tail + 1) % MAX_SIZE) == head) {
 			return true;
@@ -26,6 +55,15 @@ public:
 		return false;
 	}
 	
+	/**
+	* void Enqueue(T element) 
+	*
+	* Paraeters: Element of <T> type
+	* Retun Value: nothing
+	*
+	* Summary of the pogram:
+	*	Add a new element at the end of the queue.
+	*/
 	void Enqueue(T element) {
 		if (IsFull()) {
 			cout << "Queue is Full buddy!!" << endl;
@@ -41,11 +79,29 @@ public:
 		my_Array[tail] = element;
 	}
 
+	/**
+	* void Print_All()
+	*
+	* Paraeters: nothing
+	* Retun Value: nothing
+	*
+	* Summary of the pogram:
+	*	Print each and every element of the queue.
+	*/
 	void Print_All() {
 		for (int i = 0; i <= (tail + MAX_SIZE - head)% MAX_SIZE; i++) {
 			cout << my_Array[i] << endl;
 		}
 	}
+	/**
+	* T Dequeue()
+	*
+	* Paraeters: nothing
+	* Retun Value: type <T> element 
+	*
+	* Summary of the pogram:
+	*	Removes the element and return the head.
+	*/
 	T Dequeue() {
 		
 		if (head == -1 && tail == -1) {
@@ -62,8 +118,15 @@ public:
 	
 };
 
-
-
+/**
+* int main()
+*
+* Paraeters: nothing
+* Retun Value: int
+*
+* Summary of the pogram:
+*	Makes the Queue dynamically and you can add, remove anything in the queue.
+*/
 
 int main()
 {
