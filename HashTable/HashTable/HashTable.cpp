@@ -3,12 +3,15 @@
 
 #include "stdafx.h"
 #include<iostream>
+#include<algorithm>
+#include<array>
+#include<iterator>
 
 #define SIZE 13
 
 using namespace std;
 
-int map[SIZE];
+array<int, 13> hashArray;
 class Hash {
 private:
 
@@ -20,16 +23,57 @@ public:
 	
 	void HashInsertFunc(int inputX) {
 		int insertX = HashFunc(inputX);
-		map[insertX] = inputX;
+		hashArray[insertX] = inputX;
 	}
 	//Check for library array 
-	void HashRemoveFunc(int inputX) {
+	void HashSearchFunc(int inputX) {
 
+		array<int,13>::iterator it;
+		it = find(hashArray.begin(), hashArray.end(), inputX);
+		if (it != hashArray.end()) {
+			cout << "We found our match of " << inputX << endl;
+		}
+		else {
+			cout << "No results are found" << endl;
+		}
+	}
+
+	void HashRemoveFunc(int inputX) {
+		int deleteX = HashFunc(inputX);
+		
+		array<int, 13>::iterator it;
+		it = find(hashArray.begin(), hashArray.end(), inputX);
+		if (it != hashArray.end()) {
+			hashArray[deleteX] = NULL;
+		}
+		else {
+			cout << "No results are found" << endl;
+		}
+
+	}
+	void PrintFunc() {
+		for (int element : hashArray) {
+			cout << element << "\n";
+		}
 	}
 };
 
 int main()
 {
-    return 0;
+	Hash hash;
+	hash.HashInsertFunc(15);
+	hash.HashInsertFunc(16);
+	hash.HashInsertFunc(17);
+
+	hash.HashSearchFunc(20);
+	hash.HashSearchFunc(16);
+
+	hash.PrintFunc();
+
+	hash.HashRemoveFunc(20);
+	hash.HashRemoveFunc(17);
+
+	hash.PrintFunc();
+	return 0;
 }
 
