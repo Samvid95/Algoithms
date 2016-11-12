@@ -4,10 +4,16 @@
 #include "stdafx.h"
 #include <iostream>
 #include <math.h>
+#include <array>
+#include <vector>
+
+#define SIZE 5
 
 #define PI 3.141592653589793238462643383279502884L 
 
 using namespace std;
+
+vector<int> directions;
 
 class Point {
 private:
@@ -22,17 +28,17 @@ public:
 		yCoord = y;
 	}
 
-	double findAngle(Point p) {
+	void findAngle(Point p) {
 		double angle = atan2(yCoord - p.yCoord, xCoord - p.xCoord);
-		cout << "The angle in Radian is: "<<angle << endl;
+		//cout << "The angle in Radian is: "<<angle << endl;
 		angle = angle * 180 / PI;
-		cout << "The angle in Degrees is: " << angle << endl;;
+		//cout << "The angle in Degrees is: " << angle << endl;;
 		if (angle < 0) {
 			angle = angle + 360;
 		}
-		cout << "The angle after compensating everything is(final): " << angle << endl;
 		
-		if (angle < 0 && angle <= 22.5) {
+		
+		if (angle <= 0 && angle <= 22.5) {
 			part16 = 1;
 		}
 		else if (angle < 22.5 && angle <= 45) {
@@ -80,21 +86,34 @@ public:
 		else if (angle < 337.5 && angle <= 360) {
 			part16 = 16;
 		}
-		cout << part16 << endl;
-
-		return angle;
+		cout << "The angle after compensating everything is(final): " << angle << " and the quadrent will be: " << part16 << endl;
 	}
+
 };
+
+void printSequence(Point p) {
+
+}
 
 int main()
 {
-	Point p1(0,0);
-	Point p2(-2,-9);
-
-	float answer = p1.findAngle(p2);
-	cout << "2nd time:" << endl;;
-	answer = p2.findAngle(p1);
+	array<Point, SIZE> array1;
+	for (int i = 0; i < SIZE; i++) {
+		Point p;
+		cout << "Enter the X-coord for " << i+1 << " : ";
+		cin >> p.xCoord;
+		cout << "Enter the Y-coord for " << i+1 << " : ";
+		cin >> p.yCoord;
+		array1[i] = p;
+	}
 	
+	for (int i = 0; i < SIZE - 1; i++) {
+		array1[i+1].findAngle(array1[i]);
+	}
+
+	for (int i = 0; i < SIZE - 1; i++) {
+		printSequence(array1[i]);
+	}
 	return 0;
 }
 
