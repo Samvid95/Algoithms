@@ -67,6 +67,8 @@ Public Memebrs:		Graph constructor with a single node
 class Graph {
 private:
 	vector<Vertex *> vertexList;
+	
+	int matrix[20][20];
 	/*
 	Name: FindNodeInternal
 	Parameters: int value 
@@ -80,6 +82,29 @@ private:
 			}
 		}
 		return false;
+	}
+
+	int FindNodeIndexInternal(int value) {
+		for (int i = 0; i < vertexList.size(); i++) {
+			if (vertexList[i]->value == value) {
+				return i;
+			}
+		}
+		return 0;
+	}
+	void AllChilds() {
+		for (int i = 0; i < vertexList.size(); i++) {
+			cout << "The vertex is: " << vertexList[i]->value << endl;
+			cout << "and it's child are: " << endl;
+			for (int j = 0; j < vertexList[i]->childList.size(); j++) {
+				cout << vertexList[i]->childList[j]->value << endl;
+			}
+			cout << "and it's parents are: " << endl;
+			for (int j = 0; j < vertexList[i]->parentList.size(); j++) {
+				cout << vertexList[i]->parentList[j]->value << endl;
+			}
+			cout << "\n\n";
+		}
 	}
 public:
 	/*
@@ -172,6 +197,45 @@ public:
 		parentNode->childList.push_back(node);
 	}
 	
+	void CreateAdjencyMatrix() {
+		for (int i = 0; i < vertexList.size(); i++) {
+			for (int j = 0; j < vertexList.size(); j++) {
+				matrix[i][j] = 0;
+			}
+		}
+		
+		for (int i = 0; i < vertexList.size(); i++) {
+			int m = FindNodeIndexInternal(vertexList[i]->value);
+			for (int j = 0; j < vertexList[i]->childList.size(); j++) {
+				int n;
+				n = FindNodeIndexInternal(vertexList[i]->childList[j]->value);
+				matrix[m][n] = 1;
+			}
+		}
+		
+	}
+
+	int SearchEdge(int value, int parent) {
+		int m = FindNodeIndexInternal(value);
+		cout << "The value is: " << m << endl;
+		int n = FindNodeIndexInternal(parent);
+		cout << "The parent's value is: " << n << endl;
+		return matrix[m][n];
+	}
+
+	void PrintAdjencyMatrix() {
+		cout << "\n\n";
+		for (int i = 0; i < vertexList.size(); i++) {
+			cout << vertexList[i]->value << "\t";
+		}
+		cout << "\n";
+		for (int i = 0; i < vertexList.size(); i++) {
+			for (int j = 0; j < vertexList.size(); j++) {
+				cout << matrix[i][j] << "\t";
+			}
+			cout << "\n";
+		}
+	}
 };
 
 
@@ -179,25 +243,23 @@ int main()
 {
 	Graph *gh = new Graph(13); //Generate a graph
 
-	gh->CreateNode(8); //Create another node
+	gh->CreateNode(8);
+	gh->CreateNode(9);
 	
-	bool found;
-	found = gh->FindNode(8); //Found the node; Output will be:1
-	cout << "The answer is: " << found << endl;
+	gh->CreateEdge(8, 13);
+	gh->CreateEdge(8,9);
+	gh->CreateEdge(13, 9);
+	gh->CreateEdge(13, 8);
+	gh->CreateEdge(9, 8);
+	gh->CreateEdge(9, 13);
+
+	gh->CreateNode(15);
+	gh->CreateNode(20);
+	gh->CreateEdge(15, 20);
+
+	gh->CreateAdjencyMatrix();
+	gh->PrintAdjencyMatrix();
 	
-	cout << "The color of the vertex is: ";
-	gh->FindColor(8); //Found the color
-
-	gh->CreateNode(9, 13); //Overloaded function to generate parent and child object
-	gh->PrintAll(); //Printing every vertices
-
-
-	//Steps that should be done next:
-	/*
-	** Create Adjecency Matrix
-	** Create a method that will display each and every vertices in their childList
-	** Create a method that will display each and every vertices in their parentList
-	*/
 
 	return 0;
 }
