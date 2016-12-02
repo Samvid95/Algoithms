@@ -16,6 +16,7 @@
 
 using namespace std;
 
+int time = 0;
 /*
 Structure Name: Vertex
 Params: Parent, Child, ParentList and ChildList; Value, Color, Weight
@@ -32,6 +33,7 @@ struct Vertex {
 	int color;
 	int weight;
 	int dist;
+	int fin;
 	Vertex *top;
 	/*
 	Function name: Default constructor
@@ -163,7 +165,7 @@ public:
 	void PrintAll() {
 		cout << "\n\n";
 		for (int i = 0; i < vertexList.size(); i++) {
-			cout << "The value of the vertex is: " << vertexList[i]->value << " and color is: " << vertexList[i]->color << " and dist: " << vertexList[i]->dist<< endl;
+			cout << "The value of the vertex is: " << vertexList[i]->value << " and color is: " << vertexList[i]->color << " and dist: " << vertexList[i]->dist<< " and final value is: " << vertexList[i]->fin << endl;
 		}
 	}
 
@@ -175,6 +177,37 @@ public:
 				vertexList[i]->top = NULL;
 			}
 		}
+	}
+
+	void DFS() {
+		for (int i = 0; i < vertexList.size(); i++) {
+			vertexList[i]->color = 0;
+			vertexList[i]->top = NULL;
+			vertexList[i]->dist = 0;
+			vertexList[i]->fin = 0;
+		}
+		time = 0;
+		for (int i = 0; i < vertexList.size(); i++) {
+			if (vertexList[i]->color == 0) {
+				DFS_VISIT(vertexList[i]);
+			}
+		}
+	}
+
+	void DFS_VISIT(Vertex *u) {
+		time = time + 1;
+		u->dist = time;
+		u->color = 1;
+		for (int i = 0; i < u->childList.size(); i++) {
+			Vertex *temp = u->childList[i];
+			if (temp->color == 0) {
+				temp->top = u;
+				DFS_VISIT(temp);
+			}
+		}
+		u->color = 2;
+		time = time + 1;
+		u->fin = time;
 	}
 	/*
 	Name: FindNode
@@ -395,7 +428,7 @@ int main()
 	
 	Graph *gh;
 	gh = CreateGrpahbyMatrix();
-	BFS(gh, 3);
+	gh->DFS();
 	gh->PrintAll();
 
 	/*
